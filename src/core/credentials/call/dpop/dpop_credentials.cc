@@ -78,8 +78,8 @@ std::string Sha256Base64Url(absl::string_view input) {
   unsigned char digest[SHA256_DIGEST_LENGTH];
   SHA256(reinterpret_cast<const unsigned char*>(input.data()), input.size(),
          digest);
-  return Base64UrlNoPad(absl::string_view(
-      reinterpret_cast<const char*>(digest), SHA256_DIGEST_LENGTH));
+  return Base64UrlNoPad(absl::string_view(reinterpret_cast<const char*>(digest),
+                                          SHA256_DIGEST_LENGTH));
 }
 
 std::string JsonString(absl::string_view s) {
@@ -126,8 +126,8 @@ std::string BuildEcJwk(EVP_PKEY* pkey) {
 #endif
   return absl::StrCat("{", JsonString("kty"), ":", JsonString("EC"), ",",
                       JsonString("crv"), ":", JsonString("P-256"), ",",
-                      JsonString("x"), ":", JsonString(x), ",",
-                      JsonString("y"), ":", JsonString(y), "}");
+                      JsonString("x"), ":", JsonString(x), ",", JsonString("y"),
+                      ":", JsonString(y), "}");
 }
 
 // Sign |to_sign| with |pkey| using ECDSA/SHA-256.
@@ -308,8 +308,8 @@ std::string grpc_dpop_credentials::BuildDpopProof(
 }
 
 ArenaPromise<absl::StatusOr<ClientMetadataHandle>>
-grpc_dpop_credentials::GetRequestMetadata(
-    ClientMetadataHandle initial_metadata, const GetRequestMetadataArgs* args) {
+grpc_dpop_credentials::GetRequestMetadata(ClientMetadataHandle initial_metadata,
+                                          const GetRequestMetadataArgs* args) {
   // Token binding: DPoP proofs are only emitted on TLS-secured connections.
   if (!IsTlsBoundConnection(args)) {
     return Immediate(absl::UnauthenticatedError(
@@ -326,8 +326,8 @@ grpc_dpop_credentials::GetRequestMetadata(
 
   std::string htu = MakeDpopHtu(initial_metadata, args);
   if (htu.empty()) {
-    return Immediate(absl::UnauthenticatedError(
-        "DPoP: missing authority or path for htu"));
+    return Immediate(
+        absl::UnauthenticatedError("DPoP: missing authority or path for htu"));
   }
 
   std::string proof = BuildDpopProof(htu, tls_channel_binding);
@@ -336,13 +336,13 @@ grpc_dpop_credentials::GetRequestMetadata(
         absl::UnauthenticatedError("DPoP: failed to build proof JWT"));
   }
 
-  initial_metadata->Append(
-      GRPC_AUTHORIZATION_METADATA_KEY, authorization_value_.Ref(),
-      [](absl::string_view, const Slice&) { abort(); });
+  initial_metadata->Append(GRPC_AUTHORIZATION_METADATA_KEY,
+                           authorization_value_.Ref(),
+                           [](absl::string_view, const Slice&) { abort(); });
 
-  initial_metadata->Append(
-      GRPC_DPOP_PROOF_METADATA_KEY, Slice::FromCopiedString(proof),
-      [](absl::string_view, const Slice&) { abort(); });
+  initial_metadata->Append(GRPC_DPOP_PROOF_METADATA_KEY,
+                           Slice::FromCopiedString(proof),
+                           [](absl::string_view, const Slice&) { abort(); });
 
   return Immediate(std::move(initial_metadata));
 }
@@ -354,7 +354,8 @@ grpc_call_credentials* grpc_dpop_credentials_create(const char* access_token,
                                                     void* reserved) {
   (void)reserved;
   if (access_token == nullptr || access_token[0] == '\0') {
-    LOG(ERROR) << "grpc_dpop_credentials_create: access_token must not be empty";
+    LOG(ERROR)
+        << "grpc_dpop_credentials_create: access_token must not be empty";
     return nullptr;
   }
   if (ec_private_pem == nullptr || ec_private_pem[0] == '\0') {

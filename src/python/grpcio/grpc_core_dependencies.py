@@ -69,6 +69,7 @@ CORE_SOURCE_FILES = [
     'src/core/credentials/call/call_creds_registry_init.cc',
     'src/core/credentials/call/call_creds_util.cc',
     'src/core/credentials/call/composite/composite_call_credentials.cc',
+    'src/core/credentials/call/dpop/dpop_credentials.cc',
     'src/core/credentials/call/external/aws_external_account_credentials.cc',
     'src/core/credentials/call/external/aws_request_signer.cc',
     'src/core/credentials/call/external/external_account_credentials.cc',

@@ -117,6 +117,9 @@ extern grpc_google_refresh_token_credentials_create_type grpc_google_refresh_tok
 typedef grpc_call_credentials*(*grpc_access_token_credentials_create_type)(const char* access_token, void* reserved);
 extern grpc_access_token_credentials_create_type grpc_access_token_credentials_create_import;
 #define grpc_access_token_credentials_create grpc_access_token_credentials_create_import
+typedef grpc_call_credentials*(*grpc_dpop_credentials_create_type)(const char* access_token, const char* ec_private_pem, void* reserved);
+extern grpc_dpop_credentials_create_type grpc_dpop_credentials_create_import;
+#define grpc_dpop_credentials_create grpc_dpop_credentials_create_import
 typedef grpc_call_credentials*(*grpc_google_iam_credentials_create_type)(const char* authorization_token, const char* authority_selector, void* reserved);
 extern grpc_google_iam_credentials_create_type grpc_google_iam_credentials_create_import;
 #define grpc_google_iam_credentials_create grpc_google_iam_credentials_create_import

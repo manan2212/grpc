@@ -231,6 +231,8 @@
     <file baseinstalldir="/" name="src/core/credentials/call/call_creds_util.h" role="src" />
     <file baseinstalldir="/" name="src/core/credentials/call/composite/composite_call_credentials.cc" role="src" />
     <file baseinstalldir="/" name="src/core/credentials/call/composite/composite_call_credentials.h" role="src" />
+    <file baseinstalldir="/" name="src/core/credentials/call/dpop/dpop_credentials.cc" role="src" />
+    <file baseinstalldir="/" name="src/core/credentials/call/dpop/dpop_credentials.h" role="src" />
     <file baseinstalldir="/" name="src/core/credentials/call/external/aws_external_account_credentials.cc" role="src" />
     <file baseinstalldir="/" name="src/core/credentials/call/external/aws_external_account_credentials.h" role="src" />
     <file baseinstalldir="/" name="src/core/credentials/call/external/aws_request_signer.cc" role="src" />

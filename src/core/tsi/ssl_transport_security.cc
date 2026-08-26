@@ -2284,10 +2284,9 @@ static std::string ComputeTlsChannelBinding(SSL* ssl) {
     // RFC 9266: label "EXPORTER-Channel-Binding", empty context, 32 bytes.
     static constexpr char kExporterLabel[] = "EXPORTER-Channel-Binding";
     static constexpr size_t kExporterLen = 32;
-    if (SSL_export_keying_material(
-            ssl, binding, kExporterLen, kExporterLabel,
-            sizeof(kExporterLabel) - 1, nullptr, 0,
-            /*use_context=*/1) != 1) {
+    if (SSL_export_keying_material(ssl, binding, kExporterLen, kExporterLabel,
+                                   sizeof(kExporterLabel) - 1, nullptr, 0,
+                                   /*use_context=*/1) != 1) {
       return "";
     }
     binding_len = kExporterLen;

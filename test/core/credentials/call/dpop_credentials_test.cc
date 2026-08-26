@@ -136,13 +136,12 @@ absl::StatusOr<DpopMetadata> GetDpopMetadata(
   absl::Status status;
   auto activity = MakeActivity(
       [creds, &md, &args] {
-        return Map(
-            creds->GetRequestMetadata(
-                ClientMetadataHandle(&md, Arena::PooledDeleter(nullptr)),
-                &args),
-            [](absl::StatusOr<ClientMetadataHandle> metadata) {
-              return metadata.status();
-            });
+        return Map(creds->GetRequestMetadata(
+                       ClientMetadataHandle(&md, Arena::PooledDeleter(nullptr)),
+                       &args),
+                   [](absl::StatusOr<ClientMetadataHandle> metadata) {
+                     return metadata.status();
+                   });
       },
       ExecCtxWakeupScheduler(),
       [&](absl::Status s) {
@@ -173,10 +172,10 @@ TEST(DpopCredentialsTest, CreateRejectsEmptyInputs) {
             grpc_dpop_credentials_create("", kTestEcPrivatePem, nullptr));
   EXPECT_EQ(nullptr,
             grpc_dpop_credentials_create(kTestAccessToken, "", nullptr));
-  EXPECT_EQ(nullptr, grpc_dpop_credentials_create(nullptr, kTestEcPrivatePem,
-                                                  nullptr));
-  EXPECT_EQ(nullptr, grpc_dpop_credentials_create(kTestAccessToken, nullptr,
-                                                  nullptr));
+  EXPECT_EQ(nullptr,
+            grpc_dpop_credentials_create(nullptr, kTestEcPrivatePem, nullptr));
+  EXPECT_EQ(nullptr,
+            grpc_dpop_credentials_create(kTestAccessToken, nullptr, nullptr));
 }
 
 TEST(DpopCredentialsTest, CreateSucceeds) {
@@ -265,9 +264,8 @@ TEST(DpopCredentialsTest, AttachesDpopProofBoundToTlsSession) {
   EXPECT_THAT(claims_json, HasSubstr("\"ath\":"));
   EXPECT_THAT(claims_json, HasSubstr("\"jti\":"));
   EXPECT_THAT(claims_json, HasSubstr("\"iat\":"));
-  EXPECT_THAT(claims_json,
-              HasSubstr(absl::StrCat("\"tls_channel_binding\":\"",
-                                     kTestChannelBindingA, "\"")));
+  EXPECT_THAT(claims_json, HasSubstr(absl::StrCat("\"tls_channel_binding\":\"",
+                                                  kTestChannelBindingA, "\"")));
 
   creds->Unref();
 }
@@ -306,7 +304,8 @@ TEST(DpopCredentialsTest, DifferentTlsSessionsProduceDifferentProofs) {
 TEST(DpopCredentialsTest, InvalidPemFailsProof) {
   grpc_call_credentials* creds = grpc_dpop_credentials_create(
       kTestAccessToken,
-      "-----BEGIN EC PRIVATE KEY-----\nnot-a-key\n-----END EC PRIVATE KEY-----\n",
+      "-----BEGIN EC PRIVATE KEY-----\nnot-a-key\n-----END EC PRIVATE "
+      "KEY-----\n",
       nullptr);
   ASSERT_NE(creds, nullptr);
 
