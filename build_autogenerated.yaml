@@ -1137,6 +1137,7 @@ libs:
   - src/core/lib/security/authorization/matchers.h
   - src/core/lib/security/authorization/rbac_policy.h
   - src/core/lib/security/authorization/stdout_logger.h
+  - src/core/lib/slice/byte_source.h
   - src/core/lib/slice/percent_encoding.h
   - src/core/lib/slice/slice.h
   - src/core/lib/slice/slice_buffer.h
@@ -2894,6 +2895,7 @@ libs:
   - src/core/lib/security/authorization/authorization_policy_provider.h
   - src/core/lib/security/authorization/evaluate_args.h
   - src/core/lib/security/authorization/grpc_server_authz_filter.h
+  - src/core/lib/slice/byte_source.h
   - src/core/lib/slice/percent_encoding.h
   - src/core/lib/slice/slice.h
   - src/core/lib/slice/slice_buffer.h
@@ -6877,6 +6879,16 @@ targets:
   deps:
   - gtest
   - grpc++_test_util
+- name: byte_source_test
+  gtest: true
+  build: test
+  language: c++
+  headers: []
+  src:
+  - test/core/slice/byte_source_test.cc
+  deps:
+  - gtest
+  - grpc_test_util
 - name: c_slice_buffer_test
   gtest: true
   build: test

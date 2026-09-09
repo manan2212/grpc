@@ -40,8 +40,7 @@ class ByteSource {
  public:
   ByteSource() = default;
   explicit ByteSource(absl::Span<const uint8_t> span) : span_(span) {}
-  explicit ByteSource(const Slice& slice)
-      : span_(slice.data(), slice.size()) {}
+  explicit ByteSource(const Slice& slice) : span_(slice.data(), slice.size()) {}
   explicit ByteSource(const grpc_slice& slice)
       : span_(GRPC_SLICE_START_PTR(slice), GRPC_SLICE_LENGTH(slice)) {}
   ByteSource(const uint8_t* data, size_t length) : span_(data, length) {}
@@ -144,7 +143,8 @@ class ByteSource {
 class ByteSink {
  public:
   ByteSink() = default;
-  explicit ByteSink(absl::Span<uint8_t> span) : span_(span), start_size_(span.size()) {}
+  explicit ByteSink(absl::Span<uint8_t> span)
+      : span_(span), start_size_(span.size()) {}
   explicit ByteSink(MutableSlice& slice)
       : span_(slice.data(), slice.size()), start_size_(slice.size()) {}
   ByteSink(uint8_t* data, size_t length)

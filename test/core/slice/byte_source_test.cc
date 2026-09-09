@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "test/core/test_util/test_config.h"
-
 #include "src/core/lib/slice/byte_source.h"
+
 #include "src/core/lib/slice/slice.h"
+#include "test/core/test_util/test_config.h"
 #include "gtest/gtest.h"
 
 using grpc_core::ByteSource;
