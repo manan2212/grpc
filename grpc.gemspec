@@ -1779,6 +1779,7 @@ Gem::Specification.new do |s|
   s.files += %w( src/core/lib/security/authorization/rbac_policy.h )
   s.files += %w( src/core/lib/security/authorization/stdout_logger.cc )
   s.files += %w( src/core/lib/security/authorization/stdout_logger.h )
+  s.files += %w( src/core/lib/slice/byte_source.h )
   s.files += %w( src/core/lib/slice/percent_encoding.cc )
   s.files += %w( src/core/lib/slice/percent_encoding.h )
   s.files += %w( src/core/lib/slice/slice.cc )
