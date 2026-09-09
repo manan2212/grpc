@@ -1760,6 +1760,7 @@
     <file baseinstalldir="/" name="src/core/lib/security/authorization/rbac_policy.h" role="src" />
     <file baseinstalldir="/" name="src/core/lib/security/authorization/stdout_logger.cc" role="src" />
     <file baseinstalldir="/" name="src/core/lib/security/authorization/stdout_logger.h" role="src" />
+    <file baseinstalldir="/" name="src/core/lib/slice/byte_source.h" role="src" />
     <file baseinstalldir="/" name="src/core/lib/slice/percent_encoding.cc" role="src" />
     <file baseinstalldir="/" name="src/core/lib/slice/percent_encoding.h" role="src" />
     <file baseinstalldir="/" name="src/core/lib/slice/slice.cc" role="src" />
