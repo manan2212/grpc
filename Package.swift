@@ -1776,6 +1776,7 @@ let package = Package(
         "src/core/lib/security/authorization/rbac_translator.h",
         "src/core/lib/security/authorization/stdout_logger.cc",
         "src/core/lib/security/authorization/stdout_logger.h",
+        "src/core/lib/slice/byte_source.h",
         "src/core/lib/slice/percent_encoding.cc",
         "src/core/lib/slice/percent_encoding.h",
         "src/core/lib/slice/slice.cc",
