@@ -13,13 +13,15 @@
 // limitations under the License.
 
 #include "src/core/lib/slice/byte_source.h"
+
+#include <cstring>
+
 #include "src/core/lib/slice/slice.h"
 #include "gtest/gtest.h"
 #include "absl/types/span.h"
-#include <cstring>
 
-using grpc_core::ByteSource;
 using grpc_core::ByteSink;
+using grpc_core::ByteSource;
 using grpc_core::Slice;
 
 TEST(ByteSourceTest, Empty) {
@@ -170,11 +172,8 @@ TEST(ByteSinkTest, WriteIntegers) {
   EXPECT_EQ(18u, sink.bytes_written());
 
   const uint8_t expected[] = {
-      0x01,
-      0x23, 0x45,
-      0x67, 0x89, 0xab,
-      0xcd, 0xef, 0x01, 0x23,
-      0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01, 0x23,
+      0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01,
+      0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01, 0x23,
   };
 
   EXPECT_EQ(0, memcmp(buf, expected, sizeof(expected)));
