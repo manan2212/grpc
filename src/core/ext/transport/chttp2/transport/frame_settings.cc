@@ -16,9 +16,9 @@
 #include "src/core/ext/transport/chttp2/transport/frame_settings.h"
 
 #include <grpc/support/port_platform.h>
-#include <cstring>
 
 #include <cstdint>
+#include <cstring>
 
 #include "src/core/ext/transport/chttp2/transport/flow_control.h"
 #include "src/core/ext/transport/chttp2/transport/legacy_frame.h"
@@ -31,7 +31,7 @@
 #include "src/core/util/grpc_log.h"
 #include "src/core/util/grpc_realloc.h"
 
-using grpc_core::http2::Http2ErrorCode;
+    using grpc_core::http2::Http2ErrorCode;
 
 static void fill_header(grpc_core::ByteSink& sink, uint32_t length,
                         uint8_t flags) {
@@ -50,8 +50,10 @@ grpc_slice grpc_chttp2_settings_ack_create(void) {
   return output;
 }
 
-grpc_error_handle grpc_chttp2_settings_parser_parse(
-    void* p, grpc_chttp2_transport* t, const grpc_slice& slice, int is_last) {
+grpc_error_handle grpc_chttp2_settings_parser_parse(void* p,
+                                                    grpc_chttp2_transport* t,
+                                                    const grpc_slice& slice,
+                                                    int is_last) {
   grpc_chttp2_settings_parser* parser =
       static_cast<grpc_chttp2_settings_parser*>(p);
 
@@ -73,14 +75,12 @@ grpc_error_handle grpc_chttp2_settings_parser_parse(
             grpc_core::Http2Settings* target_settings = &t->peer_settings;
             target_settings->set_initial_window_size(
                 grpc_core::Http2Settings::kDefaultInitialWindowSize);
-            t->http2_ztrace_collector.Append(
-                grpc_core::H2SettingsTrace<true>{
-                    false, target_settings->ToMap()});
+            t->http2_ztrace_collector.Append(grpc_core::H2SettingsTrace<true>{
+                false, target_settings->ToMap()});
           }
           return absl::OkStatus();
         }
-        parser->id = static_cast<uint16_t>(
-            static_cast<uint16_t>(*v) << 8);
+        parser->id = static_cast<uint16_t>(static_cast<uint16_t>(*v) << 8);
         [[fallthrough]];
       }
 
@@ -132,25 +132,21 @@ grpc_error_handle grpc_chttp2_settings_parser_parse(
         }
         parser->value |= static_cast<uint32_t>(*v);
 
-        if (parser->id ==
-            grpc_core::Http2Settings::kInitialWindowSizeWireId) {
+        if (parser->id == grpc_core::Http2Settings::kInitialWindowSizeWireId) {
           t->initial_window_update +=
               static_cast<int64_t>(static_cast<int32_t>(parser->value)) -
-              static_cast<int64_t>(
-                  t->peer_settings.initial_window_size());
+              static_cast<int64_t>(t->peer_settings.initial_window_size());
         }
 
-        if (parser->id ==
-            grpc_core::Http2Settings::kInitialWindowSizeWireId) {
+        if (parser->id == grpc_core::Http2Settings::kInitialWindowSizeWireId) {
           // Defer updating peer settings window to the frame completion so we
           // don't affect flow control calculations while parsing a single
           // SETTINGS frame.
           t->peer_settings.set_initial_window_size(parser->value);
         }
 
-        t->http2_ztrace_collector.Append(
-            grpc_core::H2SettingsTrace<false>{
-                false, {{parser->id, parser->value}}});
+        t->http2_ztrace_collector.Append(grpc_core::H2SettingsTrace<false>{
+            false, {{parser->id, parser->value}}});
 
         parser->state = GRPC_CHTTP2_SPS_ID0;
       } break;
