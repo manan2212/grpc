@@ -16,10 +16,10 @@
 
 #include <cstdint>
 
-#include "absl/types/span.h"
+#include "src/core/lib/slice/slice.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "src/core/lib/slice/slice.h"
+#include "absl/types/span.h"
 
 namespace grpc_core {
 namespace {
@@ -72,7 +72,8 @@ TEST(ByteSourceTest, CopyTo) {
   ByteSource src(input, sizeof(input));
 
   EXPECT_TRUE(src.CopyTo(absl::MakeSpan(output), sizeof(output)));
-  EXPECT_THAT(std::vector<uint8_t>(output, output + 3), ElementsAre('a', 'b', 'c'));
+  EXPECT_THAT(std::vector<uint8_t>(output, output + 3),
+              ElementsAre('a', 'b', 'c'));
   EXPECT_EQ(src.remaining(), 2u);
 }
 
@@ -83,7 +84,8 @@ TEST(ByteSourceTest, CopyToChecksDestinationSize) {
 
   EXPECT_FALSE(src.CopyTo(absl::MakeSpan(output), 3));
   EXPECT_EQ(src.remaining(), 3u);
-  EXPECT_THAT(std::vector<uint8_t>(output, output + 2), ElementsAre(0xaa, 0xaa));
+  EXPECT_THAT(std::vector<uint8_t>(output, output + 2),
+              ElementsAre(0xaa, 0xaa));
 }
 
 TEST(ByteSourceTest, OutOfBounds) {
@@ -112,9 +114,9 @@ TEST(ByteSinkTest, WriteIntegers) {
   ASSERT_TRUE(sink.WriteU32BE(0x89abcdef));
   ASSERT_TRUE(sink.WriteU32BE(0x01234567));
 
-  EXPECT_THAT(std::vector<uint8_t>(output, output + 12), ElementsAre(
-      0x01, 0x23, 0x45, 0x67, 0x89, 0xab,
-      0xcd, 0xef, 0x01, 0x23, 0x45, 0x67));
+  EXPECT_THAT(std::vector<uint8_t>(output, output + 12),
+              ElementsAre(0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01,
+                          0x23, 0x45, 0x67));
 }
 
 TEST(ByteSinkTest, MultiByteWriteDoesNotPartiallyWrite) {
@@ -122,7 +124,8 @@ TEST(ByteSinkTest, MultiByteWriteDoesNotPartiallyWrite) {
   ByteSink sink(absl::MakeSpan(output));
 
   EXPECT_FALSE(sink.WriteU32BE(0x12345678));
-  EXPECT_THAT(std::vector<uint8_t>(output, output + 3), ElementsAre(0xaa, 0xaa, 0xaa));
+  EXPECT_THAT(std::vector<uint8_t>(output, output + 3),
+              ElementsAre(0xaa, 0xaa, 0xaa));
 }
 
 }  // namespace

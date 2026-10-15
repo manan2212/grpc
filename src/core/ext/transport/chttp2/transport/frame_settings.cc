@@ -15,9 +15,9 @@
 #include "src/core/ext/transport/chttp2/transport/frame_settings.h"
 
 #include <grpc/support/port_platform.h>
-#include <cstring>
 
 #include <cstdint>
+#include <cstring>
 
 #include "src/core/ext/transport/chttp2/transport/flow_control.h"
 #include "src/core/ext/transport/chttp2/transport/legacy_frame.h"
@@ -71,12 +71,11 @@ grpc_error_handle grpc_chttp2_settings_parser_parse(void* p,
         if (!v.has_value()) {
           parser->state = GRPC_CHTTP2_SPS_ID0;
           if (is_last) {
-            grpc_core::Http2Settings* target_settings =
-                &t->peer_settings;
+            grpc_core::Http2Settings* target_settings = &t->peer_settings;
             target_settings->set_initial_window_size(
                 grpc_core::Http2Settings::kDefaultInitialWindowSize);
-            t->http2_ztrace_collector.Append(
-                grpc_core::H2SettingsTrace<true>{false, target_settings->ToMap()});
+            t->http2_ztrace_collector.Append(grpc_core::H2SettingsTrace<true>{
+                false, target_settings->ToMap()});
           }
           return absl::OkStatus();
         }
@@ -140,8 +139,8 @@ grpc_error_handle grpc_chttp2_settings_parser_parse(void* p,
           t->peer_settings.set_initial_window_size(parser->value);
         }
 
-        t->http2_ztrace_collector.Append(
-            grpc_core::H2SettingsTrace<false>{false, {{parser->id, parser->value}}});
+        t->http2_ztrace_collector.Append(grpc_core::H2SettingsTrace<false>{
+            false, {{parser->id, parser->value}}});
 
         parser->state = GRPC_CHTTP2_SPS_ID0;
       } break;
