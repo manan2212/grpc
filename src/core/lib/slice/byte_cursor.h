@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GRPC_SRC_CORE_LIB_SLICE_BYTE_SOURCE_H
-#define GRPC_SRC_CORE_LIB_SLICE_BYTE_SOURCE_H
+#ifndef GRPC_SRC_CORE_LIB_SLICE_BYTE_CURSOR_H
+#define GRPC_SRC_CORE_LIB_SLICE_BYTE_CURSOR_H
 
 #include <grpc/slice.h>
 #include <string.h>
@@ -41,8 +41,7 @@ class ByteSource final {
  public:
   ByteSource() = default;
   explicit ByteSource(absl::Span<const uint8_t> span) : span_(span) {}
-  explicit ByteSource(const Slice& slice)
-      : span_(slice.data(), slice.size()) {}
+  explicit ByteSource(const Slice& slice) : span_(slice.data(), slice.size()) {}
   explicit ByteSource(const grpc_slice& slice)
       : span_(GRPC_SLICE_START_PTR(slice), GRPC_SLICE_LENGTH(slice)) {}
   ByteSource(const uint8_t* data, size_t length) : span_(data, length) {}
@@ -154,7 +153,8 @@ class ByteSource final {
 class ByteSink final {
  public:
   ByteSink() = default;
-  explicit ByteSink(absl::Span<uint8_t> span) : span_(span), start_size_(span.size()) {}
+  explicit ByteSink(absl::Span<uint8_t> span)
+      : span_(span), start_size_(span.size()) {}
   explicit ByteSink(MutableSlice& slice)
       : span_(slice.data(), slice.size()), start_size_(slice.size()) {}
   ByteSink(uint8_t* data, size_t length)
@@ -188,9 +188,7 @@ class ByteSink final {
     return true;
   }
 
-  bool WriteU31BE(uint32_t v) {
-    return WriteU32BE(v & 0x7fffffffu);
-  }
+  bool WriteU31BE(uint32_t v) { return WriteU32BE(v & 0x7fffffffu); }
 
   bool WriteU32BE(uint32_t v) {
     if (span_.size() < 4) return false;
@@ -236,4 +234,4 @@ class ByteSink final {
 
 }  // namespace grpc_core
 
-#endif  // GRPC_SRC_CORE_LIB_SLICE_BYTE_SOURCE_H
+#endif  // GRPC_SRC_CORE_LIB_SLICE_BYTE_CURSOR_H
