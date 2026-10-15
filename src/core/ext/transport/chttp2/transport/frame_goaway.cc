@@ -60,9 +60,11 @@ grpc_error_handle grpc_chttp2_goaway_parser_begin_frame(
   return absl::OkStatus();
 }
 
-grpc_error_handle grpc_chttp2_goaway_parser_parse(
-    void* parser, grpc_chttp2_transport* t, grpc_chttp2_stream* /*s*/,
-    const grpc_slice& slice, int is_last) {
+grpc_error_handle grpc_chttp2_goaway_parser_parse(void* parser,
+                                                  grpc_chttp2_transport* t,
+                                                  grpc_chttp2_stream* /*s*/,
+                                                  const grpc_slice& slice,
+                                                  int is_last) {
   grpc_chttp2_goaway_parser* p =
       static_cast<grpc_chttp2_goaway_parser*>(parser);
 
@@ -148,9 +150,8 @@ grpc_error_handle grpc_chttp2_goaway_parser_parse(
         const size_t buffered = p->debug_slice_buffer.Length();
 
         GRPC_CHECK_LE(buffered, p->debug_length);
-        GRPC_CHECK_LE(
-            debug_remaining,
-            static_cast<size_t>(p->debug_length) - buffered);
+        GRPC_CHECK_LE(debug_remaining,
+                      static_cast<size_t>(p->debug_length) - buffered);
 
         if (debug_remaining > 0) {
           auto sp = src.ReadSpan(debug_remaining).value();
@@ -169,8 +170,7 @@ grpc_error_handle grpc_chttp2_goaway_parser_parse(
                                           absl::string_view(debug_str));
 
           t->http2_ztrace_collector.Append(
-              [last_stream_id = p->last_stream_id,
-               error_code = p->error_code,
+              [last_stream_id = p->last_stream_id, error_code = p->error_code,
                debug_str = std::move(debug_str)]() mutable {
                 return grpc_core::H2GoAwayTrace<true>{
                     last_stream_id, error_code, std::move(debug_str)};
@@ -180,9 +180,8 @@ grpc_error_handle grpc_chttp2_goaway_parser_parse(
         }
       } else {
         GRPC_CHECK_LE(p->debug_pos, p->debug_length);
-        GRPC_CHECK_LE(
-            debug_remaining,
-            static_cast<size_t>(p->debug_length - p->debug_pos));
+        GRPC_CHECK_LE(debug_remaining,
+                      static_cast<size_t>(p->debug_length - p->debug_pos));
 
         if (debug_remaining > 0) {
           GRPC_CHECK(src.CopyTo(
@@ -201,8 +200,7 @@ grpc_error_handle grpc_chttp2_goaway_parser_parse(
           t->http2_ztrace_collector.Append([p]() {
             return grpc_core::H2GoAwayTrace<true>{
                 p->last_stream_id, p->error_code,
-                std::string(
-                    absl::string_view(p->debug_data, p->debug_length))};
+                std::string(absl::string_view(p->debug_data, p->debug_length))};
           });
 
           grpc_chttp2_add_incoming_goaway(
@@ -230,8 +228,7 @@ void grpc_chttp2_goaway_append(
   uint32_t frame_length;
 
   GRPC_CHECK(GRPC_SLICE_LENGTH(debug_data) < UINT32_MAX - 4 - 4);
-  frame_length =
-      4 + 4 + static_cast<uint32_t>(GRPC_SLICE_LENGTH(debug_data));
+  frame_length = 4 + 4 + static_cast<uint32_t>(GRPC_SLICE_LENGTH(debug_data));
 
   ztrace_collector->Append([last_stream_id, error_code, debug_data]() {
     return grpc_core::H2GoAwayTrace<false>{
