@@ -75,8 +75,8 @@ grpc_cc_test(
     deps = [
         "//:gpr",
         "//:grpc",
-        "//src/core:slice",
         "//src/core:byte_source",
+        "//src/core:slice",
     ],
 )
 
